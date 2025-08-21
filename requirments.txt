@@ -1,0 +1,22 @@
+# Voice Processing
+speechrecognition
+pyttsx3
+gTTS
+whisper
+
+# Vision Processing
+ultralytics
+pytesseract
+Pillow
+opencv-python
+
+# NLP / Reasoning
+transformers
+openai
+
+# Interface
+streamlit
+
+# Utilities
+numpy
+requests
