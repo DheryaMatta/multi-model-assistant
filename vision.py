@@ -24,7 +24,10 @@ while(True):
         print("face error",e)
     results=model(frame,imgsz=320)
     Annotated_frame=results[0].plot()  #used for detecting
-    combined = cv2.addWeighted(frame, 0.7, Annotated_frame, 0.7, 0)
+    recog= frame[y:y+h, x:x+w]   # crop face
+    cv2.imwrite("temp.jpg", recog) # save temporarily
+
+    combined = cv2.addWeighted(frame, 0.7, Annotated_frame, 0.7, 0) #both frames
 
     # ---------- Show ----------
     cv2.imshow("Phone Stream", combined)
