@@ -2,7 +2,7 @@ import speech_recognition as speech
 import pyttsx3
 import sys
 
-r=speech.Recognizer()
+
 
 
 def speak(text):
@@ -12,7 +12,8 @@ def speak(text):
     engine.runAndWait()
 
 
-def listen(r):
+def listen():
+    r=speech.Recognizer()
     with speech.Microphone() as mic:
         print("speak now....")
         audio=r.listen(mic)
@@ -40,7 +41,7 @@ def listen(r):
 
 if __name__ == "__main__":
     speak("Speak now...")
-    command = listen(r)
+    command = listen()
     if command:
        if "stop" in command:
         speak("closing the program...")
