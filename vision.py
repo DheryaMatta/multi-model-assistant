@@ -10,7 +10,7 @@ def start_camera():
     while(True):
 
         ret,frame=cap.read()
-        count+=1
+
         if not ret:
             break
 
@@ -25,18 +25,15 @@ def start_camera():
                         if w > 30 and h > 30:     
                             if w < frame_w * 0.8 and h < frame_h * 0.8:
                                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)
+                        recog= frame[y:y+h, x:x+w]   # crop face
+                        result=DeepFace.find(img_path=recog,db_path="faces/",enforce_detection=False)
+                        if len(result[0])>0:
+                            identity = result[0].iloc[0]['identity'].split("/")[-1].split(".")[0]#if found remove .jpg and gives name to identity
+                            cv2.putText(frame, identity, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
+                        else:
+                            cv2.putText(frame, "Unknown", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
             except Exception as e:
                 print("face error",e)
-            try: #face recogniton
-                recog= frame[y:y+h, x:x+w]   # crop face
-                result=DeepFace.find(img_path=recog,db_path="faces/",enforce_detection=False)#recognize/compares img
-
-                if len(result[0])>0:
-                    identity = result[0].iloc[0]['identity'].split("/")[-1].split(".")[0]#if found remove .jpg and gives name to identity
-                    cv2.putText(frame, identity, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
-                else:
-                    cv2.putText(frame, "Unknown", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
-            except:
                 pass
 
         combined = cv2.addWeighted(frame, 0.7, Annotated_frame, 0.7, 0)
