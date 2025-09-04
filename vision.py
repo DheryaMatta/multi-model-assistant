@@ -2,6 +2,7 @@ import cv2
 import wikipedia
 from deepface import DeepFace
 from ultralytics import YOLO
+from voice import speak
 
 
 
@@ -27,8 +28,10 @@ def face_detection(frame):
                 if len(result[0]) > 0:
                     identity = result[0].iloc[0]['identity'].split("/")[-1].split(".")[0]
                     cv2.putText(frame, identity, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
+                    speak(identity)
                 else:
                     cv2.putText(frame, "Unknown", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
+                    speak("unknown")
         except Exception as e:
             print("face error:", e)
 
@@ -38,6 +41,7 @@ def face_detection(frame):
 
     cap.release()
     cv2.destroyAllWindows()
+    
 
     def object_detect():
         cap=cv2.VideoCapture(0) #replace 0 with ip address to get feed from mobile camera
