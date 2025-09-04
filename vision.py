@@ -40,31 +40,39 @@ def face_detection(frame):
     cv2.destroyAllWindows()
 
     def object_detect():
-        while True:
-            ret,frame=cap.read(
-                
-            )
-            for box in object_det[0].boxes:
+        cap=cv2.VideoCapture(0) #replace 0 with ip address to get feed from mobile camera
+        model=YOLO("yolov8n.pt")
+        while (True):
+            ret,frame=cap.read()
+
+            results = model(frame, imgsz=320)
+            annotated_frame = results[0].plot()
+
+            cv2.imshow("Object Detection", annotated_frame)
+
+            if not ret:
+                break
+            for box in results[0].boxes:
                 cls_id=int(box.cls[0])# get class id of detected object
-                obj_name = object_det[0].names[cls_id]# get name
+                obj_name = results[0].names[cls_id]# get name
                 print("detected object",obj_name)
                 return obj_name
             try:
                 summary=wikipedia.summary(obj_name,sentences=2)
                 print(f"{obj_name} summary:{summary}")
-                cv2.putText(Annotated_frame, f"{obj_name}: {summary[:50]}..." , (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
+                cv2.putText(annotated_frame, f"{obj_name}: {summary[:50]}..." , (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,0), 2)
             except Exception as e:
                     print(f"Error for {obj_name}: {e}")
 
                 
             
-        if cv2.waitKey(1)==ord("q"): #for closing
-            break
+            if cv2.waitKey(1)==ord("q"): #for closing
+                break
 
 
 
-cap.release()
-cv2.destroyAllWindows()
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 
