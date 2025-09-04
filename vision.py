@@ -59,7 +59,8 @@ def face_detection(frame):
             for box in results[0].boxes:
                 cls_id=int(box.cls[0])# get class id of detected object
                 obj_name = results[0].names[cls_id]# get name
-                print("detected object",obj_name)
+                speak("detected object")
+                speak(obj_name)
                 return obj_name
             try:
                 summary=wikipedia.summary(obj_name,sentences=2)
