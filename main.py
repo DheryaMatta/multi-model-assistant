@@ -9,15 +9,13 @@ def main():
         command=listen().lower()
         print("You Said",command)
 
-        if "start vision" in command:
-            speak("starting vision")
-            vision.start_camera()
-            if cv2.waitKey(1)== ord("s"):
-                object=vision.object_detect
-                speak(object)
+        if "face detection" in command:
+            speak("starting recogntion ")
+            vision.face_detection()
 
-        elif cv2.waitKey(1)== ord("q"):
-            speak("exiting vision")
+        elif "object detection":
+            speak("starting detection")
+            vision.object_detect()
             break
 
         else:
